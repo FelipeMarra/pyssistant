@@ -2,7 +2,6 @@ import os
 import subprocess as sp
 from tempfile import TemporaryFile
 
-#TODO: test answers
 
 # The path to the directory that contains the code you 
 # want to run
@@ -15,6 +14,7 @@ DIR = "/home/dpi/Documents/materias/estagio_ensino/INF 100 - 8 /p3"
 # beginning of another
 # There MUST exist a blank line at the end of the file
 
+#TODO:
 # The answer.txt file will be used to test the test cases 
 # from injection.txt
 # Each word for each line in answer.txt will correspond
@@ -38,8 +38,8 @@ def read_injections() -> list[str]:
             
 def test_file(file_path:str):
     """
-        Tests the program inside [file] for all the text
-        cases from injection.txt and answer.txt 
+        Tests the program inside [file_path] for all the
+        cases from injection.txt
     """
     # Read injection
     injections = read_injections()

@@ -1,14 +1,12 @@
-#https://stackoverflow.com/questions/47986858/give-inputs-to-a-running-program-using-python
-import sys
+import os
 import subprocess as sp
 from tempfile import TemporaryFile
 
 #TODO: test answers
 
-#TODO: change to a loop in a directory
-# The path to the folder that contains the code you want
-#  to run
-PATH = "p03.py"
+# The path to the directory that contains the code you 
+# want to run
+DIR = "/home/dpi/Documents/materias/estagio_ensino/INF 100 - 8 /p3"
 
 # Each line of the injection.txt file corresponds to a 
 # user input
@@ -47,8 +45,6 @@ def test_file(file_path:str):
     injections = read_injections()
 
     for injection in injections:
-        answer = None
-
         # For each injection, create a temp file, and 
         # pass it as stdin for the file being tested
         with TemporaryFile(mode='w+t') as temp_f:
@@ -60,11 +56,27 @@ def test_file(file_path:str):
             temp_f.seek(0)
             print("################ \n")
 
+            # try:
             answer = sp.run(["python3", file_path], stdin=temp_f, capture_output=True, encoding="utf-8")
-            print(answer.stdout)
+            temp_f.seek(0)
 
-test_file(PATH)
+            if answer.stdout:
+                print(answer.stdout)
+            else:
+                print("There was an error testing the file")
+                print(answer)
+            # except Exception as e:
+            #     print(f"There was an error in file {file} \n {e} \n")
+            
 
-# Open the current file in VS Code
-sp.run([f"code {PATH}"], shell=True, check=True)
-input("Press ENTRER to continue")
+for file in os.listdir(DIR):
+    print(f"\n Testing the file {file} \n")
+
+    file_path = f'{os.path.join(DIR, file)}'
+
+    test_file(file_path)
+
+    # Open the current file in VS Code
+    sp.run([f"code '{file_path}'"], shell=True, check=True)
+
+    input("Press ENTRER to continue")

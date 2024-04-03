@@ -56,18 +56,17 @@ def test_file(file_path:str):
             temp_f.seek(0)
             print("################ \n")
 
-            # try:
-            answer = sp.run(["python3", file_path], stdin=temp_f, capture_output=True, encoding="utf-8")
+            answer = sp.run(["python3", file_path], stdin=temp_f, 
+                            capture_output=True, encoding="utf-8")
             temp_f.seek(0)
 
+            #TODO: exception handling
             if answer.stdout:
                 print(answer.stdout)
             else:
                 print("There was an error testing the file")
                 print(answer)
-            # except Exception as e:
-            #     print(f"There was an error in file {file} \n {e} \n")
-            
+
 
 for file in os.listdir(DIR):
     print(f"\n Testing the file {file} \n")

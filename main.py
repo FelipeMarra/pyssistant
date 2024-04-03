@@ -79,3 +79,6 @@ for file in os.listdir(DIR):
     sp.run([f"code '{file_path}'"], shell=True, check=True)
 
     input("Press ENTRER to continue")
+
+    # Clear terminal
+    sp.run(["clear"], shell=True, check=True)

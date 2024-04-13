@@ -1,11 +1,13 @@
 import os
 import subprocess as sp
 from tempfile import TemporaryFile
+import traceback
 
 
 # The path to the directory that contains the code you 
 # want to run
-DIR = "/home/dpi/Documents/materias/estagio_ensino/INF 100 - 8 /p3"
+DIR = "/home/felipe/Desktop/materias/estagio/INF 100 - 8"
+DONE = os.path.join(DIR, "done")
 
 # Each line of the injection.txt file corresponds to a 
 # user input
@@ -63,22 +65,39 @@ def test_file(file_path:str):
             #TODO: exception handling
             if answer.stdout:
                 print(answer.stdout)
+                print(traceback.format_exc())
             else:
                 print("There was an error testing the file")
                 print(answer)
+                print(traceback.format_exc())
 
 
-for file in os.listdir(DIR):
-    print(f"\n Testing the file {file} \n")
+def move_to_done(file_name:str, file_path:str):
+    os.rename(file_path, os.path.join(DONE, file_name))
 
-    file_path = f'{os.path.join(DIR, file)}'
+def main():
+    os.makedirs(DONE, exist_ok=True)
+    
+    for file in os.listdir(DIR):
+        if file == "done":
+            continue
 
-    test_file(file_path)
+        print(f"\n Testing the file {file} \n")
 
-    # Open the current file in VS Code
-    sp.run([f"code '{file_path}'"], shell=True, check=True)
+        file_path = f'{os.path.join(DIR, file)}'
 
-    input("Press ENTRER to continue")
+        test_file(file_path)
 
-    # Clear terminal
-    sp.run(["clear"], shell=True, check=True)
+        # Open the current file in VS Code
+        sp.run([f"code '{file_path}'"], shell=True, check=True)
+
+        input("Press ENTRER to continue")
+
+        # Move file to done folder
+        move_to_done(file,file_path)
+
+        # Clear terminal
+        sp.run(["clear"], shell=True, check=True)
+
+if __name__ == "__main__":
+    main()

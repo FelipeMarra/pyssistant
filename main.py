@@ -6,7 +6,7 @@ import traceback
 
 # The path to the directory that contains the code you 
 # want to run
-DIR = "/home/felipe/Desktop/materias/estagio/INF 100 - 8"
+DIR = "/home/felipe/Desktop/materias/estagio/p4"
 DONE = os.path.join(DIR, "done")
 
 # Each line of the injection.txt file corresponds to a 
@@ -65,7 +65,7 @@ def test_file(file_path:str):
             #TODO: exception handling
             if answer.stdout:
                 print(answer.stdout)
-                print(traceback.format_exc())
+                print(answer.stderr)
             else:
                 print("There was an error testing the file")
                 print(answer)

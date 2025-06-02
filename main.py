@@ -3,11 +3,11 @@ import subprocess as sp
 from tempfile import TemporaryFile
 import traceback
 
-
 # The path to the directory that contains the code you 
 # want to run
-DIR = "/home/felipe/Desktop/materias/estagio/p4"
+DIR = "/home/felipe/Desktop/materias/estagio/INF 100 - 21/"
 DONE = os.path.join(DIR, "done")
+INVALID = ["done", "__pycache__"] # folders and files to skip when looping DIR
 
 # Each line of the injection.txt file corresponds to a 
 # user input
@@ -37,7 +37,7 @@ def read_injections() -> list[str]:
             temp = ""
 
     return treated
-            
+
 def test_file(file_path:str):
     """
         Tests the program inside [file_path] for all the
@@ -72,19 +72,19 @@ def test_file(file_path:str):
                 print(traceback.format_exc())
 
 
-def move_to_done(file_name:str, file_path:str):
-    os.rename(file_path, os.path.join(DONE, file_name))
+def move_to_done(file_name:str, file_path:str, done_path:str):
+    os.rename(file_path, os.path.join(done_path, file_name))
 
-def main():
-    os.makedirs(DONE, exist_ok=True)
-    
-    for file in os.listdir(DIR):
-        if file == "done":
+def main(dir:str, done_path:str, invalid_files:list[str]):
+    os.makedirs(done_path, exist_ok=True)
+
+    for file in os.listdir(dir):
+        if file in invalid_files:
             continue
 
         print(f"\n Testing the file {file} \n")
 
-        file_path = f'{os.path.join(DIR, file)}'
+        file_path = f'{os.path.join(dir, file)}'
 
         test_file(file_path)
 
@@ -94,10 +94,10 @@ def main():
         input("Press ENTRER to continue")
 
         # Move file to done folder
-        move_to_done(file,file_path)
+        move_to_done(file, file_path, done_path)
 
         # Clear terminal
         sp.run(["clear"], shell=True, check=True)
 
 if __name__ == "__main__":
-    main()
+    main(DIR, DONE, INVALID)
